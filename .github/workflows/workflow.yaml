@@ -15,5 +15,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUBPAT }}
       - uses: docker://alpine
         with:
+          entrypoint: /bin/sh
           args: -c "apk update && apk info imagemagick | head -n 1 | awk '{ print $1 }' | cut -c 13- > VERSION"
       - run: git diff-index --quiet HEAD && git add VERSION && git commit -m $(cat VERSION) && git tag $(cat VERSION) && git push origin $(cat VERSION) && git push origin master
